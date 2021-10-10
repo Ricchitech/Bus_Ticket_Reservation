@@ -1,0 +1,819 @@
+Private Sub Form_Load()
+Timer1.Enabled = True
+Me.Left = (Screen.Width - Me.Width) / 2
+Me.Top = (Screen.Height - Me.Height) / 2
+End Sub
+
+
+Private Sub Timer1_Timer()
+ProgressBar1.Value = ProgressBar1.Value + 5
+If (ProgressBar1.Value = ProgressBar1.Max) Then
+Timer1.Enabled = False
+Form2.Show
+Unload Me
+End If
+End Sub
+
+
+
+Private Sub Command2_Click()
+Adodc1.RecordSource = "select * from buses where Bus_No = '" + Text1.Text + "'"
+Adodc1.Refresh
+If Adodc1.Recordset.RecordCount = 0 Then
+MsgBox "Data not Found"
+Text1.Text = ""
+Else
+Text2 = Adodc1.Recordset("Bus_Name")
+Text3 = Adodc1.Recordset("Source")
+Text4 = Adodc1.Recordset("Destination")
+Text5 = Adodc1.Recordset("Arrival")
+Text6 = Adodc1.Recordset("Departure")
+Combo1 = Adodc1.Recordset("Bus_Type")
+Text7 = Adodc1.Recordset("Travel_Price")
+Command5.Visible = True
+Command4.Visible = True
+End If
+End Sub
+
+Private Sub Command3_Click()
+If Text1.Text = "" Or Text2.Text = "" Or Text3.Text = "" Or Text4.Text = "" Or Text5.Text = "" Or Text6.Text = "" Or Text7.Text = "" Then
+MsgBox "Enter Correct Details", , "BTRS"
+Else
+Adodc1.Recordset.AddNew
+Adodc1.Recordset.Fields("Bus_No").Value = Text1.Text
+Adodc1.Recordset.Fields("Bus_Name").Value = Text2.Text
+Adodc1.Recordset.Fields("Source").Value = Text3.Text
+Adodc1.Recordset.Fields("Destination").Value = Text4.Text
+Adodc1.Recordset.Fields("S2D").Value = Text3.Text + " - " + Text4.Text
+Adodc1.Recordset.Fields("Arrival").Value = Text5.Text
+Adodc1.Recordset.Fields("Departure").Value = Text6.Text
+Adodc1.Recordset.Fields("Bus_Type").Value = Combo1.Text
+Adodc1.Recordset.Fields("Travel_Price").Value = Text7.Text
+Adodc1.Recordset.Update
+MsgBox "Bus added Successfully", , "BTRS"
+Text1.Text = ""
+Text2.Text = ""
+Text3.Text = ""
+Text4.Text = ""
+Text5.Text = ""
+Text6.Text = ""
+Text7.Text = ""
+Command2.Visible = False
+Command3.Visible = False
+Command5.Visible = False
+Command4.Visible = False
+End If
+End Sub
+
+Private Sub Command4_Click()
+If Text1.Text = "" Or Text2.Text = "" Or Text3.Text = "" Or Text5.Text = "" Or Text6.Text = "" Or Text7.Text = "" Then
+MsgBox "Enter Correct Details", , "BTRS"
+Else
+Adodc1.Recordset.Fields("Bus_No").Value = Text1.Text
+Adodc1.Recordset.Fields("Bus_Name").Value = Text2.Text
+Adodc1.Recordset.Fields("Source").Value = Text3.Text
+Adodc1.Recordset.Fields("Destination").Value = Text4.Text
+Adodc1.Recordset.Fields("S2D").Value = Text3.Text + " - " + Text4.Text
+Adodc1.Recordset.Fields("Arrival").Value = Text5.Text
+Adodc1.Recordset.Fields("Departure").Value = Text6.Text
+Adodc1.Recordset.Fields("Bus_Type").Value = Combo1.Text
+Adodc1.Recordset.Fields("Travel_Price").Value = Text7.Text
+Adodc1.Recordset.Update
+MsgBox "Modified", , "BTRS"
+Text1.Text = ""
+Text2.Text = ""
+Text3.Text = ""
+Text4.Text = ""
+Text5.Text = ""
+Text6.Text = ""
+Text7.Text = ""
+Command2.Visible = False
+Command3.Visible = False
+Command5.Visible = False
+Command4.Visible = False
+
+End If
+End Sub
+
+
+Private Sub Command5_Click()
+Dim dlt As String
+dlt = MsgBox("Do you really want to Delete this Bus?", vbYesNoCancel)
+If dlt = vbYes Then
+Adodc1.RecordSource = "select * from buses where Bus_No = '" + Text1.Text + "'"
+Adodc1.Refresh
+If Adodc1.Recordset.RecordCount = 0 Then
+MsgBox "No Buses Found"
+Else
+Adodc1.Recordset.Delete
+MsgBox "Bus Deleted", , "BTRS"
+Text1.Text = ""
+Text2.Text = ""
+Text3.Text = ""
+Text4.Text = ""
+Text5.Text = ""
+Text6.Text = ""
+Text7.Text = ""
+Command2.Visible = False
+Command3.Visible = False
+Command5.Visible = False
+Command4.Visible = False
+End If
+End If
+End Sub
+
+Private Sub Form_Load()
+Text1.Enabled = False
+Command2.Visible = False
+Command3.Visible = False
+Command5.Visible = False
+Command4.Visible = False
+End Sub
+
+Private Sub homemenu_Click()
+Form3.Show
+Unload Me
+End Sub
+
+Private Sub mnurefresh_Click()
+Adodc1.RecordSource = "select * from buses"
+Adodc1.Refresh
+Text1.Text = ""
+Text2.Text = ""
+Text3.Text = ""
+Text4.Text = ""
+Text5.Text = ""
+Text6.Text = ""
+Text7.Text = ""
+Command2.Visible = False
+Command3.Visible = False
+Command5.Visible = False
+Command4.Visible = False
+End Sub
+
+Private Sub modbus_Click()
+Text1.Enabled = True
+Command2.Visible = True
+Command5.Visible = False
+Command3.Visible = False
+End Sub
+
+Private Sub newbus_Click()
+Text1.Enabled = True
+Command5.Visible = False
+Command3.Visible = True
+Command4.Visible = False
+Command2.Visible = False
+Command5.Visible = False
+End Sub
+
+
+Private Sub Command1_Click()
+If Text1.Text = "" Then
+MsgBox "Enter PNR Number", , "BTRS"
+Else
+Adodc1.RecordSource = "select * from Ticket where PNR_No = '" + Text1.Text + "'"
+Adodc1.Refresh
+If Adodc1.Recordset.RecordCount = 0 Then
+MsgBox "Data Not Found"
+Text1.Text = ""
+Else
+Text2 = Adodc1.Recordset("Passengername")
+Text3 = Adodc1.Recordset("City")
+Text4 = Adodc1.Recordset("Age")
+Text5 = Adodc1.Recordset("Cantact_No")
+Text13 = Adodc1.Recordset("S2D")
+Text6 = Adodc1.Recordset("Bus_No")
+Text7 = Adodc1.Recordset("Bus_Name")
+Text8 = Adodc1.Recordset("Bus_Type")
+Text9 = Adodc1.Recordset("Departure")
+Text10 = Adodc1.Recordset("Arrival")
+Text11 = Adodc1.Recordset("Ticket_Price")
+DTPicker1 = Adodc1.Recordset("JourneyDt")
+Text12 = Adodc1.Recordset("Nationality")
+Text14 = Adodc1.Recordset("Passenger_Type")
+End If
+End If
+End Sub
+
+Private Sub Command2_Click()
+Adodc1.RecordSource = "select * from Ticket where PNR_No ='" + Text1.Text + "'"
+Adodc1.Refresh
+Adodc1.Recordset.Fields("Passengername").Value = Text2.Text
+Adodc1.Recordset.Fields("City").Value = Text3.Text
+Adodc1.Recordset.Fields("Age").Value = Text4.Text
+Adodc1.Recordset.Fields("Cantact_No").Value = Text5.Text
+Adodc1.Recordset.Fields("S2D").Value = Text13.Text
+Adodc1.Recordset.Fields("Bus_No").Value = Text6.Text
+Adodc1.Recordset.Fields("Bus_Name").Value = Text7.Text
+Adodc1.Recordset.Fields("Bus_Type").Value = Text8.Text
+Adodc1.Recordset.Fields("Departure").Value = Text9.Text
+Adodc1.Recordset.Fields("Arrival").Value = Text10.Text
+Adodc1.Recordset.Fields("Ticket_Price").Value = Text11.Text
+Adodc1.Recordset.Fields("JourneyDt").Value = DTPicker1.Value
+Adodc1.Recordset.Fields("Nationality").Value = Text12.Text
+Adodc1.Recordset.Fields("Passenger_Type").Value = Text14.Text
+Adodc1.Recordset.Update
+MsgBox "Modified", , "BTRS"
+Text1.Text = ""
+Text2.Text = ""
+Text3.Text = ""
+Text4.Text = ""
+Text5.Text = ""
+Text6.Text = ""
+Text7.Text = ""
+Text8.Text = ""
+Text9.Text = ""
+Text10.Text = ""
+Text11.Text = ""
+Text12.Text = ""
+Text13.Text = ""
+Text14.Text = ""
+End Sub
+
+Private Sub hm_Click()
+Form3.Show
+Unload Me
+End Sub
+
+
+Private Sub adminmenu_Click()
+Form9.Show
+End Sub
+
+Private Sub cancelmenu_Click()
+Form7.Show
+Unload Me
+End Sub
+
+Private Sub exitmenu_Click()
+End
+End Sub
+
+Private Sub map_Click()
+Form8.Show
+Unload Me
+End Sub
+
+Private Sub pnrmenu_Click()
+Form5.Show
+Unload Me
+End Sub
+
+Private Sub ticketmenu_Click()
+Form6.Show
+Unload Me
+End Sub
+
+
+
+Private Sub addbusmenu_Click()
+Form10.Show
+Unload Me
+End Sub
+
+Private Sub exitmenu_Click()
+Unload Me
+End Sub
+
+Private Sub mnulog_Click()
+Form2.Show
+Unload Me
+End Sub
+
+Private Sub pnrmodmenu_Click()
+Form11.Show
+Unload Me
+End Sub
+
+Private Sub report1_Click()
+Form12.Show
+Unload Me
+End Sub
+
+Private Sub usermenu_Click()
+Form4.Show
+End Sub
+
+
+
+Private Sub addbusmenu_Click()
+Form10.Show
+Unload Me
+End Sub
+
+Private Sub exitmenu_Click()
+Unload Me
+End Sub
+
+Private Sub mnulog_Click()
+Form2.Show
+Unload Me
+End Sub
+
+Private Sub pnrmodmenu_Click()
+Form11.Show
+Unload Me
+End Sub
+
+Private Sub report1_Click()
+Form12.Show
+Unload Me
+End Sub
+
+Private Sub usermenu_Click()
+Form4.Show
+End Sub
+
+
+Private Sub Form_Load()
+Me.Left = (Screen.Width - Me.Width) / 2
+Me.Top = (Screen.Height - Me.Height) / 2
+End Sub
+
+Private Sub menuhome_Click()
+Unload Me
+End Sub
+
+Private Sub newuserbtn_Click()
+Adodc1.Recordset.AddNew
+Adodc1.Recordset.Fields("Username").Value = Text1.Text
+If Text2.Text = Text3.Text Then
+Adodc1.Recordset.Fields("Password").Value = Text3.Text
+Adodc1.Recordset.Update
+MsgBox "New User Added Successfully", , "BTRS"
+Text1.Text = ""
+Text2.Text = ""
+Text3.Text = ""
+Else
+MsgBox "password not matched", , "EMPIRE"
+Text2.Text = ""
+Text3.Text = ""
+End If
+End Sub
+
+
+Private Sub Form_Load()
+Me.Left = (Screen.Width - Me.Width) / 2
+Me.Top = (Screen.Height - Me.Height) / 2
+End Sub
+
+Private Sub menuhome_Click()
+Unload Me
+End Sub
+
+Private Sub newuserbtn_Click()
+Adodc1.Recordset.AddNew
+Adodc1.Recordset.Fields("Username").Value = Text1.Text
+If Text2.Text = Text3.Text Then
+Adodc1.Recordset.Fields("Password").Value = Text3.Text
+Adodc1.Recordset.Update
+MsgBox "New User Added Successfully", , "BTRS"
+Text1.Text = ""
+Text2.Text = ""
+Text3.Text = ""
+Else
+MsgBox "password not matched", , "BTRS"
+Text2.Text = ""
+Text3.Text = ""
+End If
+End Sub
+
+
+Private Sub Command1_Click()
+If Text1.Text = "" Or Text6.Text = "" Then
+MsgBox "Enter PNR number And Registered Mobile number", , "EMPIRE"
+Else
+Adodc1.RecordSource = "select * from Ticket where PNR_No = '" + Text1.Text + "' and Cantact_No = '" + Text6.Text + "'"
+Adodc1.Refresh
+If Adodc1.Recordset.RecordCount = 0 Then
+MsgBox "Data Not Found"
+Text1.Text = ""
+Else
+Frame1.Visible = True
+Text2 = Adodc1.Recordset("Passengername")
+Text3 = Adodc1.Recordset("Nationality")
+Text4 = Adodc1.Recordset("City")
+Text5 = Adodc1.Recordset("Age")
+DTPicker1 = Adodc1.Recordset("JourneyDt")
+Text7 = Adodc1.Recordset("S2D")
+Text8 = Adodc1.Recordset("Bus_No")
+Text9 = Adodc1.Recordset("Bus_Name")
+Text10 = Adodc1.Recordset("Bus_Type")
+Text11 = Adodc1.Recordset("Departure")
+Text12 = Adodc1.Recordset("Arrival")
+Text13 = Adodc1.Recordset("Passenger_Type")
+Text14 = Adodc1.Recordset("Ticket_Price")
+End If
+End If
+End Sub
+
+Private Sub menu4_Click()
+Form2.Show
+Unload Me
+End Sub
+
+
+Dim pnr As Integer
+Dim xyz As Integer
+
+Private Sub Combo2_Click()
+Adodc2.RecordSource = "select * from Buses where S2D = '" + Combo2.Text + "'"
+Adodc2.Refresh
+Text6 = Adodc2.Recordset("Bus_No")
+Text7 = Adodc2.Recordset("Bus_Name")
+Text8 = Adodc2.Recordset("Bus_Type")
+Text9 = Adodc2.Recordset("Departure")
+Text10 = Adodc2.Recordset("Arrival")
+xyz = Adodc2.Recordset("Travel_Price")
+Text11.Text = ""
+End Sub
+
+Private Sub Combo3_Click()
+If Combo3.Text = "Adult" Then
+Text11.Text = xyz
+ElseIf Combo3.Text = "Senior Citizen" Then
+Text11.Text = 0.6 * xyz
+ElseIf Combo3.Text = "Child" Then
+Text11.Text = 0.3 * xyz
+End If
+End Sub
+
+Private Sub Command1_Click()
+If Text1.Text = "" Or Text2.Text = "" Or Text3.Text = "" Or Text4.Text = "" Or Text5.Text = "" Or Text11.Text = "" Then
+MsgBox "Give Correct  Details", , "BTRS"
+Else
+Adodc1.Recordset.Fields("PNR_No").Value = Text1.Text
+Adodc1.Recordset.Fields("Passengername").Value = Text2.Text
+Adodc1.Recordset.Fields("Nationality").Value = Combo1.Text
+Adodc1.Recordset.Fields("City").Value = Text3.Text
+Adodc1.Recordset.Fields("Age").Value = Text4.Text
+Adodc1.Recordset.Fields("Cantact_No").Value = Text5.Text
+Adodc1.Recordset.Fields("JourneyDt").Value = DTPicker1.Value
+Adodc1.Recordset.Fields("S2D").Value = Combo2.Text
+Adodc1.Recordset.Fields("Bus_No").Value = Text6.Text
+Adodc1.Recordset.Fields("Bus_Name").Value = Text7.Text
+Adodc1.Recordset.Fields("Bus_Type").Value = Text8.Text
+Adodc1.Recordset.Fields("Departure").Value = Text9.Text
+Adodc1.Recordset.Fields("Arrival").Value = Text10.Text
+Adodc1.Recordset.Fields("Passenger_Type").Value = Combo2.Text
+Adodc1.Recordset.Fields("Ticket_Price").Value = Text11.Text
+Adodc1.Recordset.Update
+MsgBox "Ticket Reserverd Successfully", , "BTRS"
+Text1.Text = ""
+Text2.Text = ""
+Text3.Text = ""
+Text4.Text = ""
+Text5.Text = ""
+Text6.Text = ""
+Text7.Text = ""
+Text8.Text = ""
+Text9.Text = ""
+Text10.Text = ""
+Text11.Text = ""
+End If
+End Sub
+
+Private Sub Form_Load()
+Adodc2.Refresh
+With Adodc2.Recordset
+Do Until .EOF
+Combo2.AddItem ![S2D]
+.MoveNext
+Loop
+End With
+DTPicker1.MinDate = Format(Now, "dd/mm/yyyy")
+Call AutoReg
+Adodc1.Recordset.AddNew
+Text1 = Format(pnr, "000")
+End Sub
+
+Public Sub AutoReg()
+On Error GoTo Err_id
+Adodc1.Refresh
+If Adodc1.Recordset.RecordCount = 0 Then
+pnr = 1
+Else
+Adodc1.Recordset.MoveLast
+pnr = Mid(Adodc1.Recordset("PNR_No"), 2, 3) + 1
+Adodc1.Refresh
+End If
+Exit Sub
+Err_id:
+pnr = 1
+MsgBox "PNR Not Found", vbCritical, "BTRS"
+End Sub
+
+Private Sub mHome_Click()
+Form2.Show
+Unload Me
+End Sub
+
+
+Private Sub Command1_Click()
+Adodc1.RecordSource = "select * from Ticket where PNR_No = '" + Text1.Text + "' and Cantact_No = '" + Text6.Text + "'"
+Adodc1.Refresh
+If Adodc1.Recordset.RecordCount = 0 Then
+MsgBox "Data Not Found"
+Text1.Text = ""
+Else
+Command2.Visible = True
+Text2 = Adodc1.Recordset("Passengername")
+Text3 = Adodc1.Recordset("Nationality")
+Text4 = Adodc1.Recordset("City")
+Text5 = Adodc1.Recordset("Age")
+DTPicker1 = Adodc1.Recordset("JourneyDt")
+Text7 = Adodc1.Recordset("S2D")
+Text8 = Adodc1.Recordset("Bus_No")
+Text9 = Adodc1.Recordset("Bus_Name")
+Text10 = Adodc1.Recordset("Bus_Type")
+Text11 = Adodc1.Recordset("Departure")
+Text12 = Adodc1.Recordset("Arrival")
+Text13 = Adodc1.Recordset("Passenger_Type")
+Text14 = Adodc1.Recordset("Ticket_Price")
+End If
+End Sub
+
+Private Sub Command2_Click()
+Dim dlt As String
+dlt = MsgBox("Do you really want to Cancel Your Resevation?", vbYesNoCancel)
+If dlt = vbYes Then
+Adodc1.Recordset.Delete
+MsgBox "Success", , "BTRS"
+Text1.Text = ""
+Text2.Text = ""
+Text3.Text = ""
+Text4.Text = ""
+Text5.Text = ""
+Text6.Text = ""
+Text7.Text = ""
+Text8.Text = ""
+Text9.Text = ""
+Text10.Text = ""
+Text11.Text = ""
+Text12.Text = ""
+Text13.Text = ""
+Text14.Text = ""
+End If
+End Sub
+
+Private Sub Form_Load()
+Command2.Visible = False
+End Sub
+
+Private Sub menui_Click()
+Form2.Show
+Unload Me
+End Sub
+
+Private Sub Command1_Click()
+Adodc1.RecordSource = "select * from Ticket where PNR_No = '" + Text1.Text + "' and Cantact_No = '" + Text6.Text + "'"
+Adodc1.Refresh
+If Adodc1.Recordset.RecordCount = 0 Then
+MsgBox "Data Not Found"
+Text1.Text = ""
+Else
+Command2.Visible = True
+Text2 = Adodc1.Recordset("Passengername")
+Text3 = Adodc1.Recordset("Nationality")
+Text4 = Adodc1.Recordset("City")
+Text5 = Adodc1.Recordset("Age")
+DTPicker1 = Adodc1.Recordset("JourneyDt")
+Text7 = Adodc1.Recordset("S2D")
+Text8 = Adodc1.Recordset("Bus_No")
+Text9 = Adodc1.Recordset("Bus_Name")
+Text10 = Adodc1.Recordset("Bus_Type")
+Text11 = Adodc1.Recordset("Departure")
+Text12 = Adodc1.Recordset("Arrival")
+Text13 = Adodc1.Recordset("Passenger_Type")
+Text14 = Adodc1.Recordset("Ticket_Price")
+End If
+End Sub
+
+Private Sub Command2_Click()
+Dim dlt As String
+dlt = MsgBox("Do you really want to Cancel Your Resevation?", vbYesNoCancel)
+If dlt = vbYes Then
+Adodc1.Recordset.Delete
+MsgBox "Success", , "BTRS"
+Text1.Text = ""
+Text2.Text = ""
+Text3.Text = ""
+Text4.Text = ""
+Text5.Text = ""
+Text6.Text = ""
+Text7.Text = ""
+Text8.Text = ""
+Text9.Text = ""
+Text10.Text = ""
+Text11.Text = ""
+Text12.Text = ""
+Text13.Text = ""
+Text14.Text = ""
+End If
+End Sub
+
+Private Sub Form_Load()
+Command2.Visible = False
+End Sub
+
+Private Sub menui_Click()
+Form2.Show
+Unload Me
+End Sub
+
+Private Sub cmdCancel_Click()
+Form2.Show
+Unload Me
+End Sub
+
+Private Sub cmdOK_Click()
+If Text1 = "" Or Text2 = "" Then
+MsgBox "Please Enter Valid Details"
+Text1.SetFocus
+Exit Sub
+End If
+Adodc1.RecordSource = "select * from Admin where Username = '" + Text1.Text + "' and Password = '" + Text2.Text + "'"
+Adodc1.Refresh
+If Adodc1.Recordset.RecordCount = 0 Then
+MsgBox " Login Failed"
+Text1.Text = ""
+Text2.Text = ""
+Else
+MsgBox "Login Successfull"
+Form3.Show
+Form2.Hide
+Unload Me
+Exit Sub
+End If
+End Sub
+
+Private Sub Form_Load()
+Me.Left = (Screen.Width - Me.Width) / 2
+Me.Top = (Screen.Height - Me.Height) / 2
+End Sub
+
+
+Dim pnr As Integer
+Dim xyz As Integer
+
+Private Sub Combo2_Click()
+Adodc2.RecordSource = "select * from Buses where S2D = '" + Combo2.Text + "'"
+Adodc2.Refresh
+Text6 = Adodc2.Recordset("Bus_No")
+Text7 = Adodc2.Recordset("Bus_Name")
+Text8 = Adodc2.Recordset("Bus_Type")
+Text9 = Adodc2.Recordset("Departure")
+Text10 = Adodc2.Recordset("Arrival")
+xyz = Adodc2.Recordset("Travel_Price")
+Text11.Text = ""
+End Sub
+
+Private Sub Combo3_Click()
+If Combo3.Text = "Adult" Then
+Text11.Text = xyz
+ElseIf Combo3.Text = "Senior Citizen" Then
+Text11.Text = 0.6 * xyz
+ElseIf Combo3.Text = "Child" Then
+Text11.Text = 0.3 * xyz
+End If
+End Sub
+
+Private Sub Command1_Click()
+If Text1.Text = "" Or Text2.Text = "" Or Text3.Text = "" Or Text4.Text = "" Or Text5.Text = "" Or Text11.Text = "" Then
+MsgBox "Give Correct  Details", , "BTRS"
+Else
+Adodc1.Recordset.Fields("PNR_No").Value = Text1.Text
+Adodc1.Recordset.Fields("Passengername").Value = Text2.Text
+Adodc1.Recordset.Fields("Nationality").Value = Combo1.Text
+Adodc1.Recordset.Fields("City").Value = Text3.Text
+Adodc1.Recordset.Fields("Age").Value = Text4.Text
+Adodc1.Recordset.Fields("Cantact_No").Value = Text5.Text
+Adodc1.Recordset.Fields("JourneyDt").Value = DTPicker1.Value
+Adodc1.Recordset.Fields("S2D").Value = Combo2.Text
+Adodc1.Recordset.Fields("Bus_No").Value = Text6.Text
+Adodc1.Recordset.Fields("Bus_Name").Value = Text7.Text
+Adodc1.Recordset.Fields("Bus_Type").Value = Text8.Text
+Adodc1.Recordset.Fields("Departure").Value = Text9.Text
+Adodc1.Recordset.Fields("Arrival").Value = Text10.Text
+Adodc1.Recordset.Fields("Passenger_Type").Value = Combo2.Text
+Adodc1.Recordset.Fields("Ticket_Price").Value = Text11.Text
+Adodc1.Recordset.Update
+MsgBox "Ticket Reserverd Successfully", , "BTRS"
+Text1.Text = ""
+Text2.Text = ""
+Text3.Text = ""
+Text4.Text = ""
+Text5.Text = ""
+Text6.Text = ""
+Text7.Text = ""
+Text8.Text = ""
+Text9.Text = ""
+Text10.Text = ""
+Text11.Text = ""
+End If
+End Sub
+
+Private Sub Form_Load()
+Adodc2.Refresh
+With Adodc2.Recordset
+Do Until .EOF
+Combo2.AddItem ![S2D]
+.MoveNext
+Loop
+End With
+DTPicker1.MinDate = Format(Now, "dd/mm/yyyy")
+Call AutoReg
+Adodc1.Recordset.AddNew
+Text1 = Format(pnr, "000")
+End Sub
+
+Public Sub AutoReg()
+On Error GoTo Err_id
+Adodc1.Refresh
+If Adodc1.Recordset.RecordCount = 0 Then
+pnr = 1
+Else
+Adodc1.Recordset.MoveLast
+pnr = Mid(Adodc1.Recordset("PNR_No"), 2, 3) + 1
+Adodc1.Refresh
+End If
+Exit Sub
+Err_id:
+pnr = 1
+MsgBox "PNR Not Found", vbCritical, "BTRS"
+End Sub
+
+Private Sub mHome_Click()
+Form2.Show
+Unload Me
+End Sub
+
+
+Private Sub Command1_Click()
+If Text1.Text = "" Then
+MsgBox "Enter PNR Number", , "BTRS"
+Else
+Adodc1.RecordSource = "select * from Ticket where PNR_No = '" + Text1.Text + "'"
+Adodc1.Refresh
+If Adodc1.Recordset.RecordCount = 0 Then
+MsgBox "Data Not Found"
+Text1.Text = ""
+Else
+Text2 = Adodc1.Recordset("Passengername")
+Text3 = Adodc1.Recordset("City")
+Text4 = Adodc1.Recordset("Age")
+Text5 = Adodc1.Recordset("Cantact_No")
+Text13 = Adodc1.Recordset("S2D")
+Text6 = Adodc1.Recordset("Bus_No")
+Text7 = Adodc1.Recordset("Bus_Name")
+Text8 = Adodc1.Recordset("Bus_Type")
+Text9 = Adodc1.Recordset("Departure")
+Text10 = Adodc1.Recordset("Arrival")
+Text11 = Adodc1.Recordset("Ticket_Price")
+DTPicker1 = Adodc1.Recordset("JourneyDt")
+Text12 = Adodc1.Recordset("Nationality")
+Text14 = Adodc1.Recordset("Passenger_Type")
+End If
+End If
+End Sub
+
+Private Sub Command2_Click()
+Adodc1.RecordSource = "select * from Ticket where PNR_No ='" + Text1.Text + "'"
+Adodc1.Refresh
+Adodc1.Recordset.Fields("Passengername").Value = Text2.Text
+Adodc1.Recordset.Fields("City").Value = Text3.Text
+Adodc1.Recordset.Fields("Age").Value = Text4.Text
+Adodc1.Recordset.Fields("Cantact_No").Value = Text5.Text
+Adodc1.Recordset.Fields("S2D").Value = Text13.Text
+Adodc1.Recordset.Fields("Bus_No").Value = Text6.Text
+Adodc1.Recordset.Fields("Bus_Name").Value = Text7.Text
+Adodc1.Recordset.Fields("Bus_Type").Value = Text8.Text
+Adodc1.Recordset.Fields("Departure").Value = Text9.Text
+Adodc1.Recordset.Fields("Arrival").Value = Text10.Text
+Adodc1.Recordset.Fields("Ticket_Price").Value = Text11.Text
+Adodc1.Recordset.Fields("JourneyDt").Value = DTPicker1.Value
+Adodc1.Recordset.Fields("Nationality").Value = Text12.Text
+Adodc1.Recordset.Fields("Passenger_Type").Value = Text14.Text
+Adodc1.Recordset.Update
+MsgBox "Modified", , "BTRS"
+Text1.Text = ""
+Text2.Text = ""
+Text3.Text = ""
+Text4.Text = ""
+Text5.Text = ""
+Text6.Text = ""
+Text7.Text = ""
+Text8.Text = ""
+Text9.Text = ""
+Text10.Text = ""
+Text11.Text = ""
+Text12.Text = ""
+Text13.Text = ""
+Text14.Text = ""
+End Sub
+
+Private Sub hm_Click()
+Form3.Show
+Unload Me
+End Sub
